@@ -1,13 +1,31 @@
+import {fromJS, Map as ImmutableMap, toJS} from "immutable";
 
-const intialState = {
-    login: false,
-    userData: {},
-    items:{}, 
-}
+// const initialState  = fromJS( {
+//     userData:{}
+// })
 
-const storage = (state=intialState, action)=>{
+const initialState = fromJS({
+    "userData":{},
+    "val":0
+ });
+ console.log(initialState)
+ 
+function storage (state=initialState, action){
+    // state = fromJS(state);
+    console.log(action);
     switch (action.type){
-        case "login": 
+        case "incr":
+            console.log(state)
+            console.log(state.get("val"))
+         return state.set("val", 1)
+        case "get" :
+            console.log(action.data)
+        return state
+        case "login":
+            console.log(action.data)
+            localStorage.setItem("accessToken", action.data.data.access_token)
+                state = state.set("userData", fromJS(action.data.data));
+                // return state.setIn(['userData'], "dfsd")
             return state;
         case "logout":
             return state;
@@ -16,3 +34,4 @@ const storage = (state=intialState, action)=>{
             return state;
     }
 }
+export default storage;

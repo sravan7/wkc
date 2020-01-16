@@ -1,72 +1,140 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sha512 from "sha512"
 import logo from './logo.svg';
 import './App.css';
+import { login, incr } from "./actions"
+import ShowAll from "./ShowAll";
+import styled from "styled-components";
+import CustomField from "./CustomFields"
 import axios from "axios";
+import instance from "./axiosConfig"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Signout from "./Signout";
 // import { Form } from "react-bootstrap";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Button } from "react-bootstrap";
-function App() {
+import { Formik, Field, ErrorMessage, useField, useFormikContext } from 'formik';
+import { Form } from "formik";
+import * as formValidationSchema from "./ValidationSchema"
+import { TextField, Button, InputLabel, FormControl, Box, Checkbox, Radio, FormControlLabel, Select, MenuItem, Grid } from "@material-ui/core"
+// import { Button } from "react-bootstrap";
+// import { Form, Row } from 'react-bootstrap';
+const Mypick = ({ label, ...props }) => {
+  const [fields] = useField(props);
+  console.log(fields, "fields")
+  return (
+    <Box as="div" ml={props.m} pl={2}>
+      <FormControlLabel
+        {...fields}
+        control={<props.Component color="primary" />}
+        label={label}
+      />
+    </Box>)
+}
+const CustomDatePicker = (props) => {
+  const { setFieldValue } = useFormikContext();
+  const [fields] = useField(props);
+  console.log("date", fields, props.type)
+  return (<Box as="span" ><DatePicker dateFormat="yyyy/MM/dd" type="date" {...fields} strictParsing {...props} onChange={val => { setFieldValue(fields.name, `${val.getFullYear()}-${String(val.getMonth() + 1).padStart(2, "0")}-${String(val.getDate()).padStart(2, "0")}`) }} />  DOB</Box>)
+}
+const MySelect = (props) => {
+  const [fields] = useField(props);
+  return (
+    <Box as="div" mt={1} mb={1} ml={5} width={"100"} >
+      <FormControl p={1} height="5">
+        <InputLabel >color</InputLabel>
+        <Select width={"100"} height="23" variant="outlined"  {...fields}>
+          <MenuItem value={""}>Select Color</MenuItem>
+          <MenuItem value={"black"}>Black</MenuItem>
+          <MenuItem value={"white"}>White</MenuItem>
+          <MenuItem value={"red"}>Red</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
+  )
+}
 
+function App() {
+  const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const update = useCallback((result) => dispatch(login(result.data)), [dispatch])
+  const inc = useCallback(() => dispatch(incr()), [dispatch])
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (data) => {
       console.log(data)
-      const hashed  = sha512(data.password);
-      const result = await axios({
-        method: 'post',
-        url: 'http://dev.api.staller.show/v1/users/login',
-        data: {
-          email: data.email,
-          password: hashed.toString("hex")
-        }
-      });
-      console.log(result)
-      setLoading(true)
-      // setDsata(result.data);
+      if (Object.keys(data).length > 0) {
+        const hashed = sha512(data.password);
+        // http://dev.api.staller.show/v1/horses
+        data["age_verified"] = true;
+        console.log(data, "data")
+        const result = await instance.post('/v1/horses', { data });
+        console.log(result)
+        setLoading(true)
+        // update(result);
+      }
+      // setData(result.data);
     };
     fetchData(data);
   }, [data]);
-  let handleSubmit = (values) => {
-    console.log(values.email, values.password)
-  }
   return (
     <div className="App">
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={values => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = 'Required';
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = 'Invalid email address';
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          setData(values);
-          handleSubmit(values)
-          if (loading) {
-            setSubmitting(false)
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <Field type="email" name="email" />
-            <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" component="div" />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-          </button>
-          </Form>
-        )}
-      </Formik>
+      <Signout />
+      <Grid container
+        direction="column"
+        justify="center"
+        alignItems="center"  >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Formik
+            initialValues={{ horse_name: 'second', horse_number: '2', age_verified: "", ushja_registered: true, dob: "1997-10-17", color: "black" }}
+            validationSchema={formValidationSchema.postHorseSchema}
+            // validate={values => {
+            //   const errors = {};
+            //   if (!values.email) {
+            //     errors.email = 'Required';
+            //   } else if (
+            //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            //   ) {
+            //     errors.email = 'Invalid email address';
+            //   }
+            //   console.log(errors)
+            //   return errors;
+            // }}
+            onSubmit={(values, { setSubmitting }) => {
+              console.log(values)
+
+              setData(values);
+              // handleSubmit(values)
+
+              setSubmitting(false)
+
+            }}
+          >
+            {({ values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              setFieldValue,
+              isSubmitting }) => (
+                <Form>
+                  <CustomField size="small" type="text" name="horse_name" label="Name" />
+                  <CustomField type="text" name="horse_number" label="Number" />
+                  <Mypick type="radio" Component={Radio} value={true} name="age_verified" label="Age Verification" />
+                  <Mypick ml={-10} type="checkbox" name="ushja_registered" Component={Checkbox} label="Registration" />
+                  <CustomDatePicker type="date" name="dob" onChanging={setFieldValue} />
+                  <MySelect name="color" />
+                  <Button m={10} fullWidth={true} variant="outlined" color="secondary" type="submit" disabled={isSubmitting}>Submit</Button>
+                  <pre>{JSON.stringify(values, null, 2)}</pre>
+                </Form>
+              )}
+          </Formik>
+        </Box>
+        <ShowAll />
+
+      </Grid>
     </div>
   );
 }
