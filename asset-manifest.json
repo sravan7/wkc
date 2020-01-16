@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "https//sravan7.github.io/wkc/static/css/main.be35b07b.chunk.css",
-    "main.js": "https//sravan7.github.io/wkc/static/js/main.019ae2df.chunk.js",
-    "main.js.map": "https//sravan7.github.io/wkc/static/js/main.019ae2df.chunk.js.map",
-    "runtime-main.js": "https//sravan7.github.io/wkc/static/js/runtime-main.8d942b93.js",
-    "runtime-main.js.map": "https//sravan7.github.io/wkc/static/js/runtime-main.8d942b93.js.map",
-    "static/css/2.821458bd.chunk.css": "https//sravan7.github.io/wkc/static/css/2.821458bd.chunk.css",
-    "static/js/2.ac1503a8.chunk.js": "https//sravan7.github.io/wkc/static/js/2.ac1503a8.chunk.js",
-    "static/js/2.ac1503a8.chunk.js.map": "https//sravan7.github.io/wkc/static/js/2.ac1503a8.chunk.js.map",
-    "index.html": "https//sravan7.github.io/wkc/index.html",
-    "precache-manifest.3599abec9d377c78dec4da9be0a87ddd.js": "https//sravan7.github.io/wkc/precache-manifest.3599abec9d377c78dec4da9be0a87ddd.js",
-    "service-worker.js": "https//sravan7.github.io/wkc/service-worker.js",
-    "static/css/2.821458bd.chunk.css.map": "https//sravan7.github.io/wkc/static/css/2.821458bd.chunk.css.map",
-    "static/css/main.be35b07b.chunk.css.map": "https//sravan7.github.io/wkc/static/css/main.be35b07b.chunk.css.map",
-    "static/js/2.ac1503a8.chunk.js.LICENSE": "https//sravan7.github.io/wkc/static/js/2.ac1503a8.chunk.js.LICENSE",
-    "static/media/logo.svg": "https//sravan7.github.io/wkc/static/media/logo.5d5d9eef.svg"
+    "main.css": "https//sravan7.github.io/static/css/main.be35b07b.chunk.css",
+    "main.js": "https//sravan7.github.io/static/js/main.f7ce2d7f.chunk.js",
+    "main.js.map": "https//sravan7.github.io/static/js/main.f7ce2d7f.chunk.js.map",
+    "runtime-main.js": "https//sravan7.github.io/static/js/runtime-main.5c390764.js",
+    "runtime-main.js.map": "https//sravan7.github.io/static/js/runtime-main.5c390764.js.map",
+    "static/css/2.821458bd.chunk.css": "https//sravan7.github.io/static/css/2.821458bd.chunk.css",
+    "static/js/2.6c8995b8.chunk.js": "https//sravan7.github.io/static/js/2.6c8995b8.chunk.js",
+    "static/js/2.6c8995b8.chunk.js.map": "https//sravan7.github.io/static/js/2.6c8995b8.chunk.js.map",
+    "index.html": "https//sravan7.github.io/index.html",
+    "precache-manifest.cf829d674fa7cdfd5e3aba714eb83ac4.js": "https//sravan7.github.io/precache-manifest.cf829d674fa7cdfd5e3aba714eb83ac4.js",
+    "service-worker.js": "https//sravan7.github.io/service-worker.js",
+    "static/css/2.821458bd.chunk.css.map": "https//sravan7.github.io/static/css/2.821458bd.chunk.css.map",
+    "static/css/main.be35b07b.chunk.css.map": "https//sravan7.github.io/static/css/main.be35b07b.chunk.css.map",
+    "static/js/2.6c8995b8.chunk.js.LICENSE": "https//sravan7.github.io/static/js/2.6c8995b8.chunk.js.LICENSE",
+    "static/media/logo.svg": "https//sravan7.github.io/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.8d942b93.js",
+    "static/js/runtime-main.5c390764.js",
     "static/css/2.821458bd.chunk.css",
-    "static/js/2.ac1503a8.chunk.js",
+    "static/js/2.6c8995b8.chunk.js",
     "static/css/main.be35b07b.chunk.css",
-    "static/js/main.019ae2df.chunk.js"
+    "static/js/main.f7ce2d7f.chunk.js"
   ]
 }
