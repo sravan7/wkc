@@ -8,7 +8,7 @@ import CustomField from "./CustomFields"
 import axios from "axios";
 import instance from "../helpers/axiosConfig"
 import DatePicker from "react-datepicker";
-import {Redirect } from "react-router-dom";
+import {Redirect, withRouter } from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
 // import { Form } from "react-bootstrap";
@@ -17,17 +17,20 @@ import { TextField, Button, InputLabel, FormControl, Box, Checkbox, Radio, FormC
 
 
 
-export default function Signout(){
+const Signout= (props)=>{
     const dispatch=useDispatch();
     const [status, setStatus]=useState(false);
     const clearStore=useCallback(()=>(dispatch(signoutAction())),[dispatch])
     const handleClick = ()=>{
         window.localStorage.clear()
+        window.location.reload();
         clearStore();
         setStatus(true);
     }
     console.log(status)
+    // onClick={props.handleSignout}
     return ( 
-            status?<Redirect to="/" />: <Box as="div" display="flex" justifyContent="flex-end" > <Button onClick={handleClick} variant="outlined" color="primary" mr={4} pr={4} >Signout</Button></Box>     
+           status?<Redirect to="/" />:<Box as="div" display="flex" justifyContent="flex-end" > <Button onClick={handleClick} variant="outlined" color="primary" mr={4} pr={4} >Signout</Button></Box>     
     )
 }
+export default Signout

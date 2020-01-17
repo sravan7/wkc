@@ -29,7 +29,7 @@ function Login(props) {
   const [data, setData] = useState({});
   const [status, setLogin] = useState(false);
   const update= useCallback((result)=>dispatch(login(result.data)), [dispatch])
-  
+  console.log(props, )
   const inc= useCallback(()=>dispatch(incr()), [dispatch])
   
   useEffect(() => {
@@ -69,7 +69,7 @@ function Login(props) {
       return (< Redirect to={pathname} />)
   }
   return (
-    <div className="App">
+    <div className="App" key="login">
       <Container  >
       <Formik
         initialValues={{ email: '', password: '' }}

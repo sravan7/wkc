@@ -12,6 +12,7 @@ import instance from "../helpers/axiosConfig"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Signout from "./Signout";
+import {Redirect, withRouter } from "react-router-dom";
 import { Formik, Field, ErrorMessage, useField, useFormikContext } from 'formik';
 import { Form } from "formik";
 import * as formValidationSchema from "../helpers/ValidationSchema"
@@ -44,9 +45,13 @@ const MySelect = (props) => {
 function App() {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
+  const [signout, setSignout]=useState(false);
   const [loading, setLoading] = useState(false);
   const update = useCallback((result) => dispatch(login(result.data)), [dispatch])
   const inc = useCallback(() => dispatch(incr()), [dispatch])
+  const handleSignout = ()=>{
+    setSignout(true);
+  }
   useEffect(() => {
     const fetchData = async (data) => {
       console.log(data)
@@ -66,7 +71,7 @@ function App() {
   }, [data]);
   return (
     <div className="App">
-      <Signout />
+      <Signout handleSignout={handleSignout} />
       <Grid container
         direction="column"
         justify="center"
@@ -107,7 +112,7 @@ function App() {
         <ShowAll />
 
       </Grid>
-    </div>
+    </div> 
   );
 }
 

@@ -10,7 +10,7 @@ import Authenticate from "./components/authentication"
 ReactDOM.render(
 <Provider store={store}>
     
-        <Router basename={process.env.PUBLIC_URL} >
+        <Router  >
     <Switch>
              <Route exact path="/" > <Authenticate /> </Route>
              <Route  path="/App" > 
