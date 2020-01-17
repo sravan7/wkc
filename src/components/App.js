@@ -2,36 +2,22 @@ import React, { useState, useEffect, Fragment, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sha512 from "sha512"
-import logo from './logo.svg';
-import './App.css';
-import { login, incr } from "./actions"
+import logo from '../logo.svg';
+import '../App.css';
+import { login, incr } from "../helpers/actions"
 import ShowAll from "./ShowAll";
 import styled from "styled-components";
 import CustomField from "./CustomFields"
-import axios from "axios";
-import instance from "./axiosConfig"
+import instance from "../helpers/axiosConfig"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Signout from "./Signout";
-// import { Form } from "react-bootstrap";
 import { Formik, Field, ErrorMessage, useField, useFormikContext } from 'formik';
 import { Form } from "formik";
-import * as formValidationSchema from "./ValidationSchema"
+import * as formValidationSchema from "../helpers/ValidationSchema"
 import { TextField, Button, InputLabel, FormControl, Box, Checkbox, Radio, FormControlLabel, Select, MenuItem, Grid } from "@material-ui/core"
-// import { Button } from "react-bootstrap";
-// import { Form, Row } from 'react-bootstrap';
-const Mypick = ({ label, ...props }) => {
-  const [fields] = useField(props);
-  console.log(fields, "fields")
-  return (
-    <Box as="div" ml={props.m} pl={2}>
-      <FormControlLabel
-        {...fields}
-        control={<props.Component color="primary" />}
-        label={label}
-      />
-    </Box>)
-}
+import  Mypick  from "./Mypick";
+
 const CustomDatePicker = (props) => {
   const { setFieldValue } = useFormikContext();
   const [fields] = useField(props);
@@ -89,24 +75,10 @@ function App() {
           <Formik
             initialValues={{ horse_name: 'second', horse_number: '2', age_verified: "", ushja_registered: true, dob: "1997-10-17", color: "black" }}
             validationSchema={formValidationSchema.postHorseSchema}
-            // validate={values => {
-            //   const errors = {};
-            //   if (!values.email) {
-            //     errors.email = 'Required';
-            //   } else if (
-            //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            //   ) {
-            //     errors.email = 'Invalid email address';
-            //   }
-            //   console.log(errors)
-            //   return errors;
-            // }}
             onSubmit={(values, { setSubmitting }) => {
               console.log(values)
-
               setData(values);
               // handleSubmit(values)
-
               setSubmitting(false)
 
             }}
@@ -127,7 +99,7 @@ function App() {
                   <CustomDatePicker type="date" name="dob" onChanging={setFieldValue} />
                   <MySelect name="color" />
                   <Button m={10} fullWidth={true} variant="outlined" color="secondary" type="submit" disabled={isSubmitting}>Submit</Button>
-                  <pre>{JSON.stringify(values, null, 2)}</pre>
+                  {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
                 </Form>
               )}
           </Formik>

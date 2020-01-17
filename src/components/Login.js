@@ -2,13 +2,12 @@ import React, { useState, useEffect, Fragment, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sha512 from "sha512"
-import logo from './logo.svg';
-import './App.css';
-import {login, incr} from "./actions"
+import '../App.css';
+import {login, incr} from "../helpers/actions"
 import styled from "styled-components";
 import CustomField from "./CustomFields"
 import axios from "axios";
-import * as formValidationSchema from "./ValidationSchema"
+import * as formValidationSchema from "../helpers/ValidationSchema"
 // import { Form } from "react-bootstrap";
 import { Formik, Field, ErrorMessage } from 'formik';
 import  {Form } from "formik"; 
@@ -64,7 +63,6 @@ function Login(props) {
     //   console.log("insisew 60",props , props.location? props.location:  {from: {pathname: "/"} })
       const {pathname} =  props.location 
     //   const {from}= props.location.pathname?{from: {pathname: } } props.location  {from: {pathname: "/"} };
-      console.log("from", pathname, window.localStorage.getItem("accessToken"))
       if(props.location.pathname==="/"){
           return <App />
       }  

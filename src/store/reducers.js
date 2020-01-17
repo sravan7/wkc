@@ -29,9 +29,13 @@ function storage (state=initialState, action){
             return state;
         case "logout":
             return state;
+        case "signouts":
+            
+        return state;
         default :
             console.log("action has missed for ", action);
             return state;
+        
     }
 }
 export default storage;
