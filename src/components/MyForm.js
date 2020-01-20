@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Fragment, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sha512 from "sha512"
 import logo from '../logo.svg';
 import '../App.css';
-import { login, post } from "../helpers/actions"
+import { login, incr, put, deleteIt } from "../helpers/actions"
 import ShowAll from "./ShowAll";
 import styled from "styled-components";
 import CustomField from "./CustomFields"
@@ -19,19 +19,27 @@ import * as formValidationSchema from "../helpers/ValidationSchema"
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { TextField,ExpansionPanel,ExpansionPanelActions, ExpansionPanelSummary ,ExpansionPanelDetails , Button, InputLabel, FormControl, Box, Checkbox, Radio, FormControlLabel, Select, MenuItem, Grid } from "@material-ui/core"
 import  Mypick  from "./Mypick";
-import axios from "axios";
 import CustomDatePicker from "./CustomDatePicker"
 import MySelect from "./MySelect"
-import MyForm from "./MyForm"
-
-function App() {
+import DeleteButton from "./DeleteButton"
+import axios from "axios";
+const parseData = (inp)=>{
+    let newdata = inp.map(function (val){ 
+      let {id, horse_number, horse_name, color, dob, age_verified, ushja_registered}=val;
+      console.log(id, horse_number, horse_name, color, dob, age_verified, ushja_registered);
+      age_verified=age_verified?true:false;
+      ushja_registered = ushja_registered?true:false;
+      return {id, horse_name,horse_number,  color, dob, age_verified, ushja_registered}
+    }
+    )
+}
+function MyForm(props) {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
   const [signout, setSignout]=useState(false);
-  const [loading, setLoading] = useState(true);
-  const horseData = useSelector((state) =>{ return state.horseData} )
-  console.log(horseData?horseData: null)
-  const update = useCallback((result) => dispatch(post(result.data)), [dispatch])
+  const [loading, setLoading] = useState(false);
+  const update = useCallback((result,index) => dispatch(put(result.data,index)), [dispatch])
+  const inc = useCallback(() => dispatch(incr()), [dispatch])
   const handleSignout = ()=>{
     setSignout(true);
   }
@@ -39,19 +47,21 @@ function App() {
     const fetchData = async (data) => {
       console.log(data)
       if (Object.keys(data).length > 0) {
+        const hashed = sha512(data.password);
         // http://dev.api.staller.show/v1/horses
         data["age_verified"] = true;
-        console.log(data, "data")
+        console.log(data, "data", props.formData)
         const result =axios({
-          method: 'POST',
-          url: `http://dev.api.staller.show/v1/horses`,
-          headers: {
-            Authorization : `Bearer ${window.localStorage.getItem("accessToken")}`
-          },
-          data
-        })
+            method: 'PUT',
+            url: `http://dev.api.staller.show/v1/horses/${props.formData.id}`,
+            headers: {
+              Authorization : `Bearer ${window.localStorage.getItem("accessToken")}`
+            },
+            data
+          })
+          console.log(result)
+          result.then((response)=>{ setLoading(true); console.log(response); update(parseData(response.data.data), props.index);  }).catch((err)=>{setLoading(false)});
         console.log(result)
-        result.then((response)=>{ setLoading(true); console.log(response);   }).catch((err)=>{setLoading(false)});
         setLoading(true)
         // update(result);
       }
@@ -60,26 +70,20 @@ function App() {
     fetchData(data);
   }, [data]);
   return (
-    <div className="App">
-      <Signout handleSignout={handleSignout} />
-      <ExpansionPanel >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              Create A Horse
-          </ExpansionPanelSummary>
-      <ExpansionPanelDetails >
       <Grid container
-        direction="column"
+        direction="row"
         justify="center"
         alignItems="center"  >
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" justifyContent="center" alignItems="center" className="myForm-container">
           <Formik
-            initialValues={{ horse_name: 'second', horse_number: '2', age_verified: "true", ushja_registered: true, dob: "1997-10-17", color: "black" }}
+            initialValues={props.formData}
             validationSchema={formValidationSchema.postHorseSchema}
             onSubmit={(values, { setSubmitting }) => {
               console.log(values)
               setData(values);
               // handleSubmit(values)
               setSubmitting(false)
+
             }}
           >
             {({ values,
@@ -90,28 +94,22 @@ function App() {
               handleSubmit,
               setFieldValue,
               isSubmitting }) => (
-                <Form>
+                <Form id='custom-style'>
                   <CustomField size="small" type="text" name="horse_name" label="Horse Name" />
                   <CustomField type="text" name="horse_number" label="Horse Number" />
                   <Mypick type="radio" Component={Radio} value={"true"} name="age_verified" label="Age Verification" />
                   <Mypick ml={-10} type="checkbox" name="ushja_registered" Component={Checkbox} label="Registration" />
                   <CustomDatePicker type="date" name="dob" onChanging={setFieldValue} />
                   <MySelect name="color" label="Color" />
-                  <Button m={10} fullWidth={true} variant="outlined" color="secondary" type="submit" disabled={isSubmitting}>Submit</Button>
+                  <Button  variant="outlined" color="secondary" type="submit" className="custom-button" disabled={isSubmitting}> Update</Button>
+                  <DeleteButton variant="outlined" color="Red" className="custom-button" id={props.formData.id} index={props.index}  />
                   {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
                 </Form>
               )}
           </Formik>
         </Box>
       </Grid>
-      </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ShowAll enable={loading} />
-      {
-        horseData.map((val,index)=> <MyForm index={index} formData={val} key={val.id} />)
-      }
-    </div> 
   );
 }
 
-export default App;
+export default MyForm;

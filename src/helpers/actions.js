@@ -12,10 +12,11 @@ export const get = (data) => (
         data
     }
 );
-export const put = (data) => (
+export const put = (data,index) => (
     {
         type: "put",
-        data
+        data,
+        index
     }
 );
 export const post = (data) => (
@@ -24,10 +25,10 @@ export const post = (data) => (
         data
     }
 );
-export const deleteIt = (data) => (
+export const deleteIt = (index) => (
     {
-        type: "delte",
-        data
+        type: "delete",
+        index
     }
 );
 export const signoutAction = (data) => (

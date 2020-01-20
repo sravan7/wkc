@@ -17,7 +17,7 @@ export const postHorseSchema = Yup.object().shape({
     .required("Reuired"),
     horse_number: Yup.string()
     .min(1, "Too Short")
-    .min(100, "Too long"),
+    .max(100, "Too long"),
     age_verified: Yup.string()
     .required("Required"),
     ushja_registered: Yup.boolean()

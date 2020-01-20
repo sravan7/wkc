@@ -16,7 +16,20 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+#custom-style{
+  display: grid;
+  grid-template-columns: repeat(8, auto);
+  grid-template-rows: 70px;
+  grid-gap: 2px;
+}
+.custom-button{
+  height: 50px;
+}
+.myForm-container{
+  margin: 6px 0 0 0 ;
+  border:1px solid black;
+  box-shadow: 0 0 3px 0 black;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

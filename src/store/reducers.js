@@ -4,10 +4,11 @@ import {fromJS, Map as ImmutableMap, toJS} from "immutable";
 //     userData:{}
 // })
 
-const initialState = fromJS({
+const initialState = {
+    "horseData":[],
     "userData":{},
     "val":0
- });
+ };
  console.log(initialState)
  
 function storage (state=initialState, action){
@@ -16,17 +17,28 @@ function storage (state=initialState, action){
     switch (action.type){
         case "incr":
             console.log(state)
-            console.log(state.get("val"))
-         return state.set("val", 1)
+            // console.log(state.get("val"))
+         return state
         case "get" :
-            console.log(action.data)
-        return state
+        //    state= state.setIn(["horseData", fromJS(action.data)])    
+        // console.log(state.get("horseData").toJS())
+        return Object.assign(state,{"horseData":action.data});
+        case "put" :
+            let newData =[...state.horseData];
+            newData[action.index]=action.data
+            return Object.assign(state,{"horseData":newData});
+        case "delete" :
+            let newArray =[...state.horseData];
+            newArray.splice(action.index,1)
+            console.log(newArray)
+            return Object.assign(state,{"horseData":newArray});
+            
         case "login":
             console.log(action.data)
             localStorage.setItem("accessToken", action.data.data.access_token)
-                state = state.set("userData", fromJS(action.data.data));
+                // state = state.set("userData", fromJS(action.data.data));
                 // return state.setIn(['userData'], "dfsd")
-            return state;
+            return Object.assign(state,{"userData":action.data.data});
         case "logout":
             return state;
         case "signouts":
